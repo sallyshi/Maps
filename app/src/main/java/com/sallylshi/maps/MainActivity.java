@@ -21,6 +21,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 897897;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,40 +32,37 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void getJson() {
-        try {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
+        new Thread( ()-> {
+            try {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
 
-                // Should we show an explanation?
-                if (shouldShowRequestPermissionRationale(
-                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    // Explain to the user why we need to read the contacts
+                    // Should we show an explanation?
+                    if (shouldShowRequestPermissionRationale(
+                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        // Explain to the user why we need to read the contacts
+                    }
+
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                    return;
                 }
 
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                FileInputStream Fin = new FileInputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/2020_JANUARY.json");
+                byte[] b = new byte[1024];
+                StringBuilder origText = new StringBuilder();
 
-                // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                // app-defined int constant that should be quite unique
+                while ((Fin.read(b)) != -1) {
+                    origText.append(new String(b));
+                }
+                final String text = origText.toString();
+                TextView view = findViewById(R.id.test);
 
-                return;
+                runOnUiThread(() -> view.setText(text));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            FileInputStream Fin=new FileInputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/2020_MARCH.json");
-            byte[] b=new byte[1024];
-            StringBuilder origText = new StringBuilder();
-            int i;
-            while((i = Fin.read(b)) != -1) {
-                origText.append(new String(b));
-
-            }
-            Log.e("SALLY", i + "");
-            final String text = origText.toString();
-            TextView view = findViewById(R.id.test);
-
-            runOnUiThread( () ->view.setText(text));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }).start();
     }
 }
