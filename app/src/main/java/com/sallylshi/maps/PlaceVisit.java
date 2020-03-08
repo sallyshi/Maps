@@ -23,12 +23,15 @@ class PlaceVisit {
     double visitConfidence;
     ArrayList<Location> otherCandidateLocations;
     EditConfirmationStatus editConfirmationStatus;
+    ArrayList<PlaceVisit> childVisits;
+    ArrayList<Point> simplifiedRawPath;
 
     PlaceVisit(Location location, Duration duration, PlaceConfidence placeConfidence,
                long centerLatE7,
                long centerLngE7, double visitConfidence,
                ArrayList<Location> otherCandidateLocations,
-               EditConfirmationStatus editConfirmationStatus) {
+               EditConfirmationStatus editConfirmationStatus, ArrayList<PlaceVisit> childVisits,
+               ArrayList<Point> simplifiedRawPath) {
         this.location = location;
         this.duration = duration;
         this.placeConfidence = placeConfidence;
@@ -37,6 +40,8 @@ class PlaceVisit {
         this.visitConfidence = visitConfidence;
         this.otherCandidateLocations = otherCandidateLocations;
         this.editConfirmationStatus = editConfirmationStatus;
+        this.childVisits = childVisits;
+        this.simplifiedRawPath = simplifiedRawPath;
     }
 
 }

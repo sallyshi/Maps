@@ -31,13 +31,14 @@ class JsonParser {
         reader.nextName();
         reader.beginArray();
 
-        while(reader.hasNext()) {
+        while (reader.hasNext()) {
             reader.beginObject();
             String n = reader.nextName();
-            switch(n) {
+            Log.e("read", "name is now " +n);
+            switch (n) {
                 case "placeVisit":
-                placeVisits.add(parsePlaceVisit(reader));
-                break;
+                    placeVisits.add(parsePlaceVisit(reader));
+                    break;
                 case "activitySegment":
                     //Temporary
                     reader.skipValue();
@@ -53,7 +54,7 @@ class JsonParser {
         reader.endObject();
 
 
-        for(PlaceVisit p : placeVisits) {
+        for (PlaceVisit p : placeVisits) {
             Log.e("SALLY",
                     "PlaceVisit: " + p.location + p.duration + p.centerLngE7 + p.centerLatE7 +
                             "List size is: " + placeVisits.size());
@@ -69,10 +70,12 @@ class JsonParser {
         long centerLngE7 = 0;
         int visitConfidence = 0;
         ArrayList<Location> otherCandidateLocations = new ArrayList<>();
+        ArrayList<PlaceVisit> childVisits = new ArrayList<>();
         PlaceVisit.EditConfirmationStatus editConfirmationStatus = null;
         reader.beginObject();
         while (reader.hasNext()) {
             String n = reader.nextName();
+            Log.e("SALLY", "name is " + n);
             switch (n) {
                 case "location":
                     parseLocation(reader);
@@ -85,9 +88,16 @@ class JsonParser {
                             reader.nextString());
                     break;
                 case "childVisits":
+                    reader.beginArray();
+                    while (reader.hasNext()) {
+                        childVisits.add(parsePlaceVisit(reader));
+                    }
+                    reader.endArray();
                     break;
                 case "centerLatE7":
-                    centerLatE7 = reader.nextLong();
+                    long lat = reader.nextLong();
+                    Log.e("centerLatE227", "lattitude is " + lat);
+                    centerLatE7 = lat;
                     break;
                 case "centerLngE7":
                     centerLngE7 = reader.nextLong();
@@ -106,15 +116,21 @@ class JsonParser {
                     Enum.valueOf(PlaceVisit.EditConfirmationStatus.class,
                             reader.nextString());
                     break;
+                case "simplifiedRawPath":
+                    //Temporary
+                    reader.skipValue();
+                    break;
                 default:
                     Log.e("JsonParser", "Parsing Visit couldn't find name " + n + ". Went into " +
                             "default.");
-                    break;
+                    throw new IllegalArgumentException("Parsing Visit couldn't find name " + n +
+                            ". Went into default.");
             }
         }
         reader.endObject();
         return new PlaceVisit(location, duration, placeConfidence, centerLatE7, centerLngE7
-                , visitConfidence, otherCandidateLocations, editConfirmationStatus);
+                , visitConfidence, otherCandidateLocations, editConfirmationStatus, childVisits,
+                null);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
