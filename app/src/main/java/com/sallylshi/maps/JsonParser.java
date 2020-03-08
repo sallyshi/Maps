@@ -52,9 +52,11 @@ class JsonParser {
         reader.endArray();
         reader.endObject();
 
+
         for(PlaceVisit p : placeVisits) {
             Log.e("SALLY",
-                    "PlaceVisit: " + p.location + p.duration + p.centerLngE7 + p.centerLatE7);
+                    "PlaceVisit: " + p.location + p.duration + p.centerLngE7 + p.centerLatE7 +
+                            "List size is: " + placeVisits.size());
         }
 
         return "YAY";
@@ -81,6 +83,8 @@ class JsonParser {
                 case "placeConfidence":
                     placeConfidence = Enum.valueOf(PlaceVisit.PlaceConfidence.class,
                             reader.nextString());
+                    break;
+                case "childVisits":
                     break;
                 case "centerLatE7":
                     centerLatE7 = reader.nextLong();
