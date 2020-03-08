@@ -18,14 +18,15 @@ class PlaceVisit {
     Location location;
     Duration duration;
     PlaceConfidence placeConfidence;
-    String centerLatE7;
-    String centerLngE7;
+    long centerLatE7;
+    long centerLngE7;
     double visitConfidence;
     ArrayList<Location> otherCandidateLocations;
     EditConfirmationStatus editConfirmationStatus;
 
-    PlaceVisit(Location location, Duration duration, PlaceConfidence placeConfidence, String centerLatE7,
-               String centerLngE7, double visitConfidence,
+    PlaceVisit(Location location, Duration duration, PlaceConfidence placeConfidence,
+               long centerLatE7,
+               long centerLngE7, double visitConfidence,
                ArrayList<Location> otherCandidateLocations,
                EditConfirmationStatus editConfirmationStatus) {
         this.location = location;

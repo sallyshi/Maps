@@ -33,6 +33,7 @@ class JsonParser {
         reader.nextName();
 
         //parse PlaceVisit
+        PlaceVisit placeVisit = null;
         PlaceVisit.PlaceConfidence placeConfidence = null;
         long centerLatE7 = 0;
         long centerLngE7 = 0;
@@ -78,7 +79,9 @@ class JsonParser {
                     break;
             }
         }
-        return "";
+        placeVisit = new PlaceVisit(location, duration, placeConfidence, centerLatE7, centerLngE7
+                , visitConfidence, otherCandidateLocations, editConfirmationStatus);
+        return placeVisit.visitConfidence + "";
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
