@@ -11,7 +11,6 @@ import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
 
 class JsonParser {
     Location location;
@@ -110,6 +109,7 @@ class JsonParser {
 
     private Location parseLocation(JsonReader reader) throws IOException {
         reader.beginObject();
+
         long latitudeE7 = 0;
         long longitudeE7 = 0;
         String placeId = "";
@@ -117,6 +117,7 @@ class JsonParser {
         String name = "";
         SourceInfo sourceInfo = null;
         double locationConfidence = 0;
+        Location.SemanticType semanticType = null;
 
         while (reader.hasNext()) {
             String n = reader.nextName();
@@ -142,14 +143,19 @@ class JsonParser {
                 case "locationConfidence":
                     locationConfidence = reader.nextDouble();
                     break;
+                case "semanticType":
+                    semanticType = Enum.valueOf(Location.SemanticType.class,
+                            reader.nextString());
+                    break;
                 default:
-                    Log.e("JsonParser", "Parsing Event couldn't find name. Went into default.");
+                    Log.e("JsonParser", "Parsing Event couldn't find name " + n + ". Went into " +
+                            "default.");
                     break;
             }
         }
         reader.endObject();
         return new Location(latitudeE7, longitudeE7, placeId, address, name, sourceInfo,
-                locationConfidence);
+                locationConfidence, semanticType);
     }
 
     private SourceInfo parseSourceInfo(JsonReader reader) throws IOException {
