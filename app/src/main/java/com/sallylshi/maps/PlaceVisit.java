@@ -8,6 +8,7 @@ public class PlaceVisit {
         NOT_CONFIRMED,
         CONFIRMED;
     }
+
     private Location location;
     private Duration duration;
     private String placeConfidence;
@@ -16,5 +17,16 @@ public class PlaceVisit {
     private double visitConfidence;
     private ArrayList<Location> otherCandidateLocations;
     private EditConfirmationStatus editConfirmationStatus;
+
+    PlaceVisit(Location location, Duration duration, String placeConfidence, String centerLatE7, String centerLngE7, double visitConfidence, ArrayList<Location> otherCandidateLocations, EditConfirmationStatus editConfirmationStatus) {
+        this.location = location;
+        this.duration = duration;
+        this.placeConfidence = placeConfidence;
+        this.centerLatE7 = centerLatE7;
+        this.centerLngE7 = centerLngE7;
+        this.visitConfidence = visitConfidence;
+        this.otherCandidateLocations = otherCandidateLocations;
+        this.editConfirmationStatus = editConfirmationStatus;
+    }
 
 }

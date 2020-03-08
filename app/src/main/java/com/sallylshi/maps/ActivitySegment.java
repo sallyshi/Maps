@@ -23,8 +23,9 @@ public class ActivitySegment {
     }
 
     enum Confidence {
-        LOW;
+        LOW, MEDIUM, HIGH;
     }
+
     private Location startLocation;
     private Location endLocation;
     private Duration duration;
