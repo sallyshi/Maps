@@ -2,7 +2,7 @@ package com.sallylshi.maps;
 
 public class Location {
     enum SemanticType {
-        TYPE_SEARCHED_ADDRESS, TYPE_HOME;
+        TYPE_SEARCHED_ADDRESS, TYPE_HOME, TYPE_WORK;
     }
     long latitudeE7;
     long longitudeE7;

@@ -25,14 +25,43 @@ class JsonParser {
     @RequiresApi(api = Build.VERSION_CODES.O)
     String read(JsonReader reader) throws IOException, ParseException {
 
+        ArrayList<PlaceVisit> placeVisits = new ArrayList<>();
+
         reader.beginObject();
         reader.nextName();
         reader.beginArray();
-        reader.beginObject();
-        reader.nextName();
 
-        //parse PlaceVisit
-        PlaceVisit placeVisit = null;
+        while(reader.hasNext()) {
+            reader.beginObject();
+            String n = reader.nextName();
+            switch(n) {
+                case "placeVisit":
+                placeVisits.add(parsePlaceVisit(reader));
+                break;
+                case "activitySegment":
+                    //Temporary
+                    reader.skipValue();
+                    break;
+                default:
+                    Log.e("JsonParser", "Parsing overall couldn't find name " + n + ". Went into " +
+                            "default.");
+                    break;
+            }
+            reader.endObject();
+        }
+        reader.endArray();
+        reader.endObject();
+
+        for(PlaceVisit p : placeVisits) {
+            Log.e("SALLY",
+                    "PlaceVisit: " + p.location + p.duration + p.centerLngE7 + p.centerLatE7);
+        }
+
+        return "YAY";
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private PlaceVisit parsePlaceVisit(JsonReader reader) throws IOException {
         PlaceVisit.PlaceConfidence placeConfidence = null;
         long centerLatE7 = 0;
         long centerLngE7 = 0;
@@ -74,13 +103,14 @@ class JsonParser {
                             reader.nextString());
                     break;
                 default:
-                    Log.e("JsonParser", "Parsing Visit couldn't find name. Went into default.");
+                    Log.e("JsonParser", "Parsing Visit couldn't find name " + n + ". Went into " +
+                            "default.");
                     break;
             }
         }
-        placeVisit = new PlaceVisit(location, duration, placeConfidence, centerLatE7, centerLngE7
+        reader.endObject();
+        return new PlaceVisit(location, duration, placeConfidence, centerLatE7, centerLngE7
                 , visitConfidence, otherCandidateLocations, editConfirmationStatus);
-        return placeVisit.visitConfidence + "";
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
