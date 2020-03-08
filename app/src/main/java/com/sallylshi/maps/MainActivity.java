@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -119,12 +120,14 @@ public class MainActivity extends AppCompatActivity {
 
                 JsonReader reader = new JsonReader(new InputStreamReader(Fin));
                 reader.setLenient(true);
+                JsonParser jsonParser = new JsonParser();
 
-                final String thisIsreallytheoutput = parse(reader);
+                //final String thisIsreallytheoutput = parse(reader);
+                final String thisIsreallytheoutput = jsonParser.read(reader);
                 TextView view = findViewById(R.id.test);
 
                 runOnUiThread(() -> view.setText(thisIsreallytheoutput));
-            } catch (IOException e) {
+            } catch (IOException | ParseException e) {
                 e.printStackTrace();
             }
         }).start();

@@ -26,13 +26,28 @@ public class ActivitySegment {
         LOW, MEDIUM, HIGH;
     }
 
-    private Location startLocation;
-    private Location endLocation;
-    private Duration duration;
-    private long distance;
-    private ActivityType activityType;
-    private Confidence confidence;
-    private ArrayList<Activity> activities;
-    private ArrayList<Waypoint> waypointPath;
-    private ArrayList<Point> simplifiedRawPath;
+    Location startLocation;
+    Location endLocation;
+    Duration duration;
+    long distance;
+    ActivityType activityType;
+    Confidence confidence;
+    ArrayList<Activity> activities;
+    ArrayList<Waypoint> waypointPath;
+    ArrayList<Point> simplifiedRawPath;
+
+    ActivitySegment(Location startLocation, Location endLocation, Duration duration,
+                    long distance, ActivityType activityType, Confidence confidence,
+                    ArrayList<Activity> activities, ArrayList<Waypoint> waypointPath,
+                    ArrayList<Point> simplifiedRawPath) {
+        this.startLocation = startLocation;
+        this.endLocation = endLocation;
+        this.duration = duration;
+        this.distance = distance;
+        this.activityType = activityType;
+        this.confidence = confidence;
+        this.activities = activities;
+        this.waypointPath = waypointPath;
+        this.simplifiedRawPath = simplifiedRawPath;
+    }
 }

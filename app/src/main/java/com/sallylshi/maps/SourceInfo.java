@@ -1,7 +1,7 @@
 package com.sallylshi.maps;
 
 public class SourceInfo {
-    private long deviceTag;
+    long deviceTag;
 
     public SourceInfo(long deviceTag) {
         this.deviceTag = deviceTag;
